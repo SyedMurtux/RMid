@@ -16,6 +16,9 @@ def load_data():
 
 df = load_data()
 
+# Identify numerical columns
+numerical_columns = df.select_dtypes(include=['number']).columns
+
 # Sidebar for navigation
 st.sidebar.title("Navigation")
 options = st.sidebar.radio("Sections", [
@@ -53,7 +56,6 @@ elif options == "Feature Visualization":
     st.title("Feature Visualization")
     
     st.write("### Select Feature for Scatterplot")
-    numerical_columns = df.select_dtypes(include=['number']).columns
     x_feature = st.selectbox("Select X-axis feature", numerical_columns, index=0)
     y_feature = st.selectbox("Select Y-axis feature", numerical_columns, index=1)
 
@@ -84,7 +86,7 @@ elif options == "Descriptive Statistics":
 elif options == "Correlation and Causation":
     st.title("Correlation and Causation")
     st.write("### Pearson Correlation Coefficients")
-    selected_columns = st.multiselect("Select Features for Correlation Analysis", numerical_columns, default=numerical_columns[:4])
+    selected_columns = st.multiselect("Select Features for Correlation Analysis", numerical_columns, default=list(numerical_columns[:4]))
     if len(selected_columns) > 1:
         correlation_matrix = df[selected_columns].corr()
         st.write("### Correlation Matrix")
